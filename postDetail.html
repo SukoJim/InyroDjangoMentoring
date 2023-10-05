@@ -12,15 +12,17 @@
     <link href="css/styles.css" rel="stylesheet">
 </head>
 <body>
-    <!-- Responsive navbar (same as the original template) -->
+    <!-- Responsive navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="#!">SukoJim's Blog</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <a class="navbar-brand" href="#">SukoJim's Blog</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#!">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Login</a></li>
                     <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Info</a></li>
                 </ul>
             </div>
@@ -33,7 +35,6 @@
             <div class="col-lg-8">
                 <!-- Post content -->
                 <div class="card mb-4">
-                    <!-- Post image -->
                     <div class="card-body">
                         <!-- Post date -->
                         <div class="small text-muted">January 1, 2023</div>
@@ -41,23 +42,41 @@
                         <h1 class="card-title">Featured Post Title</h1>
                         <!-- Post text -->
                         <p class="card-text">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla? Quos cum ex quis soluta, a laboriosam.
-                            Dicta expedita corporis animi vero voluptate voluptatibus possimus, veniam magni quis!
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla? Quos cum ex quis soluta, a laboriosam. Dicta expedita corporis animi vero voluptate voluptatibus possimus, veniam magni quis!
                         </p>
+                    </div>
+                </div>
+
+                <!-- Comment section -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h3 class="card-title">Comments</h3>
+                        <div id="commentSection"></div>
+                    </div>
+
+                <!-- Comment input box -->
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="comment">Leave a Comment:</label>
+                            <textarea class="form-control" id="comment" rows="4"></textarea>
+                            <button class="btn btn-primary mt-2" id="submitComment">Submit</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Footer (same as the original template) -->
+    <!-- Footer -->
     <footer class="py-5 bg-dark">
-        <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2023</p></div>
+        <div class="container">
+            <p class="m-0 text-center text-white">Copyright &copy; Your Website 2023</p>
+        </div>
     </footer>
 
-    <!-- Bootstrap core JS (same as the original template) -->
+    <!-- Bootstrap core JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Core theme JS (same as the original template) -->
+    <!-- Core theme JS -->
     <script src="js/scripts.js"></script>
 </body>
 </html>
