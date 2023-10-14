@@ -6,7 +6,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8">
-                    <h1 class="mt-5">Login</h1>
+                    <h1 class="mt-5">Sign In</h1>
                     <!-- Sign-up form -->
                     <form>
                         <!-- Form fields for sign-up (e.g., username, password, email) -->
@@ -22,9 +22,13 @@
                             <label for="password" class="form-label">Password</label>
                             <input type="password" class="form-control" id="password" name="password" required>
                         </div>
-                        <!-- Sign-up button -->
+                        <div class="d-flex justify-content-between">
+                            <button type="submit" class="btn btn-primary">Sign In</button>
+                        </div>
+                    </form>
+                    <form method="post" action="{% url 'register' %}">
+                        {% csrf_token %}
                         <button type="submit" class="btn btn-primary">Sign Up</button>
-                        </p>
                     </form>
                 </div>
             </div>

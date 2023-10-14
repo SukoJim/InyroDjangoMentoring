@@ -2,23 +2,6 @@
 {% load static %}
 
 {% block content %}
-        <!-- Responsive navbar (same as the original template) -->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <div class="container">
-                <a class="navbar-brand" href="#!">SukoJim's Blog</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#!">Login</a></li>
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Info</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-        
         <!-- Page content for signup -->
         <div class="container">
             <div class="row">
@@ -27,6 +10,10 @@
                     <!-- Sign-up form -->
                     <form>
                         <!-- Form fields for sign-up (e.g., username, password, email) -->
+                        <div class="mb-3">
+                            <label for="username" class="form-label">ID</label>
+                            <input type="text" class="form-control" id="userID" name="userID" required>
+                        </div>
                         <div class="mb-3">
                             <label for="username" class="form-label">Username</label>
                             <input type="text" class="form-control" id="username" name="username" required>
