@@ -8,3 +8,5 @@ class Post(models.Model):
     updated_at = models.DateTimeField(auto_now_add=True)
     views = models.IntegerField(null=False, default = '0')
     image = models.ImageField(upload_to = 'uploads/',null=True)
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)  
+    category_name = models.ForeignKey(Category, on_delete=models.CASCADE)
