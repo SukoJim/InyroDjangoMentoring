@@ -11,13 +11,13 @@ class UserProfile(models.Model):
 
 class Comment(models.Model):
     content = models.CharField(max_length=100)
-    created_at = models.TextField(null=True)
+    created_at = models.DateTimeField(null=True)
     updated_at = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)  
 
 class Reply(models.Model):
     content = models.CharField(max_length=100)
-    created_at = models.TextField(null=True)
+    created_at = models.DateTimeField(null=True)
     updated_at = models.DateTimeField(auto_now_add=True)
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE)  
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)  
