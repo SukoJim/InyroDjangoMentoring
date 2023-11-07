@@ -1,5 +1,6 @@
 from django.db import models
-from posts import Post
+from posts.models import Post
+from django.contrib.auth.models import User
 # Create your models here.
 
 class UserProfile(models.Model):
@@ -12,14 +13,14 @@ class Comment(models.Model):
     content = models.CharField(max_length=100)
     created_at = models.TextField(null=True)
     updated_at = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)  # Reference to the user who posted the comment
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)  
 
 class Reply(models.Model):
     content = models.CharField(max_length=100)
     created_at = models.TextField(null=True)
     updated_at = models.DateTimeField(auto_now_add=True)
-    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)  # Reference to the comment to which this reply is made
-    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)  # Reference to the user who posted the reply
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)  
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)  
 
 class Like(models.Model):
     LIKE_TYPES = (
