@@ -1,13 +1,12 @@
 from django.db import models
 from posts.models import Post
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 # Create your models here.
 
-class UserProfile(models.Model):
-    name = models.CharField((""), max_length=50)
-    email = models.EmailField(null=True)
-    password = models.CharField(max_length=30)
-    nickname = models.CharField((""), max_length=50)
+class UserProfile(AbstractUser):
+    username = models.CharField(max_length= 20, unique=True)
+    nickname = models.CharField(max_length=50, default = "Jim")
+
 
 class Comment(models.Model):
     content = models.CharField(max_length=100)
@@ -30,9 +29,9 @@ class Like(models.Model):
     )
     like_type = models.CharField(max_length=7, choices=LIKE_TYPES)
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True, blank=True)  # Reference to the post if like is on a post
-    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, null=True, blank=True)  # Reference to the comment if like is on a comment
-    reply = models.ForeignKey(Reply, on_delete=models.CASCADE, null=True, blank=True)  # Reference to the reply if like is on a reply
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True, blank=True)  
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, null=True, blank=True)  
+    reply = models.ForeignKey(Reply, on_delete=models.CASCADE, null=True, blank=True)  
 
 class Category(models.Model):
     category_name = models.CharField(max_length=30)

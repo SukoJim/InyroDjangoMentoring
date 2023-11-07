@@ -9,4 +9,4 @@ class Post(models.Model):
     views = models.IntegerField(null=False, default = '0')
     image = models.ImageField(upload_to = 'uploads/',null=True)
     user = models.ForeignKey('users.UserProfile', on_delete=models.CASCADE)  
-    category_name = models.ForeignKey('users.Category', on_delete=models.CASCADE)
+    category_name = models.ForeignKey('users.Category', on_delete=models.CASCADE, default = 0)
