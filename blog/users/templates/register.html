@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+        <!-- Page content for signup -->
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <h1 class="mt-5">Sign Up</h1>
+                    <!-- Sign-up form -->
+                    <form action = "{% url 'register'%}" method="POST">{% csrf_token %}
+                        <!-- Form fields for sign-up (e.g., username, password, email) -->
+                        <div class="mb-3">
+                            <label for="username" class="form-label">ID</label>
+                            <input type="text" class="form-control" id="userID" name="userID" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="username" name="username" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                        <!-- Sign-up button -->
+                        <button type="submit" class="btn btn-primary">Sign Up</button>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+{% endblock %}
+</html>
