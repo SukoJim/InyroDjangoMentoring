@@ -65,6 +65,9 @@
                             <h5 class="card-title">SukoJim</h5>
                             <p class="card-text">AI Researcher</p>
                             <a href="#" class="btn btn-primary">View Profile</a>
+                            {% if user.is_authenticated %}
+                            <a href="{% url 'createPost' %}" class="btn btn-primary">Create Post</a>
+                            {% endif %}
                         </div>
                     </div>
                     <!-- Search widget-->
