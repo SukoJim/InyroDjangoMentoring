@@ -4,9 +4,15 @@ from .models import *
 from users.models import *
 # Create your views here.
 
-# Create your views here.
 def blog_home(request):
-    return render(request, 'home.html')
+    # 모든 포스트를 가져옵니다.
+    all_posts = Post.objects.all()
+
+    # 최신 포스트를 가져옵니다.
+    latest_post = Post.objects.latest('created_at')
+
+    return render(request, 'home.html', {'all_posts': all_posts, 'latest_post': latest_post})
+
 
 def postDetail(request):
     return render(request, 'postDetail.html')
@@ -37,4 +43,14 @@ def createPost(request):
         return redirect('home')
 
     # GET 요청일 경우 폼을 렌더링합니다.
-    return render(request, 'create_post.html', {'categories': Category.objects.all()})
+    return render(request, 'createPost.html', {'categories': Category.objects.all()})
+
+def postDetail(request, post_id):
+    # Assuming you have a Post model with an 'id' field
+    post = Post.objects.get(id=post_id)
+    
+    context = {
+        'post': post,
+    }
+    
+    return render(request, 'postDetail.html', context)

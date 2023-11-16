@@ -11,12 +11,12 @@
                 <div class="card mb-4">
                     <div class="card-body">
                         <!-- Post date -->
-                        <div class="small text-muted">January 1, 2023</div>
+                        <div class="small text-muted">{{ post.created_at|date:"F j, Y" }}</div>
                         <!-- Post title -->
-                        <h1 class="card-title">Featured Post Title</h1>
+                        <h1 class="card-title">{{ post.title }}</h1>
                         <!-- Post text -->
                         <p class="card-text">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla? Quos cum ex quis soluta, a laboriosam. Dicta expedita corporis animi vero voluptate voluptatibus possimus, veniam magni quis!
+                            {{ post.content }}
                         </p>
                         <button class="btn btn-outline-primary">Like</button>
                         <button class="btn btn-outline-secondary">Share</button>
