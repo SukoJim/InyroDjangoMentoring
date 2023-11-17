@@ -3,6 +3,9 @@ from django.http import HttpResponse
 from .models import *
 from users.models import *
 from .forms import *
+import os
+from django.conf import settings
+
 # Create your views here.
 
 def blog_home(request):
@@ -13,7 +16,7 @@ def blog_home(request):
     latest_post_image = latest_post.image.url if latest_post.image else None
 
     # 모든 포스트를 최신 글 순으로 가져옵니다.
-    all_posts = Post.objects.all().order_by('-created_at')
+    all_posts = Post.objects.exclude(id=latest_post.id).order_by('-created_at')
 
 
     return render(request, 'home.html', {'all_posts': all_posts, 'latest_post': latest_post, 'latest_post_image': latest_post_image})
@@ -74,8 +77,20 @@ def deletePost(request, post_id):
     # 게시글을 가져오거나 404 에러를 발생시킵니다.
     post = get_object_or_404(Post, id=post_id)
 
+    # 게시글에 연결된 이미지를 가져옵니다.
+    post_image = post.image
+
     # 게시글을 삭제합니다.
     post.delete()
+
+    # 이미지가 존재하면 삭제합니다.
+    if post_image:
+        # 이미지 파일의 실제 경로를 가져옵니다.
+        image_path = os.path.join(settings.MEDIA_ROOT, str(post_image))
+        
+        # 이미지 파일을 삭제합니다.
+        if os.path.exists(image_path):
+            os.remove(image_path)
 
     # 삭제 후 어떤 페이지로 이동할지를 정의합니다.
     return redirect('home')
