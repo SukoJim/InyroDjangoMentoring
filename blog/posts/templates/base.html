@@ -13,6 +13,12 @@
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+        <style>
+            .post-content img {
+                max-width: 100%; /* Ensure images don't exceed the width of their container */
+                height: auto; /* Maintain the aspect ratio */
+            }
+        </style>
     </head>
     <body>
         <!-- 네비게이션 바 -->

@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load markdownify %}
 
 {% block content %}
         <!-- Page header with logo and tagline-->
@@ -23,9 +24,10 @@
                                 <img class="card-img-top" src="{{ latest_post.image.url }}" alt="..." />
                             </a>
                             <div class="card-body">
+                                <h6 class="card-title">{{ latest_post.user }}</h5>
                                 <div class="small text-muted">{{ latest_post.created_at }}</div>
-                                <h2 class="card-title">{{ latest_post.title }}</h2>
-                                <p class="card-text">{{ latest_post.content }}</p>
+                                <h2 class="card-title">{{ latest_post.title }}</h2>  
+                                <p class="card-text">{{ latest_post.content|markdownify|truncatechars:150|safe }}</p>
                                 <a class="btn btn-primary" href="{% url 'postDetail' post_id=latest_post.id %}">Read more →</a>
                             </div>
                         </div>
@@ -41,9 +43,10 @@
                                         <img class="card-img-top" src="{{ post.image.url }}" alt="..." />
                                     </a>
                                     <div class="card-body">
+                                        <h6 class="card-title">{{ post.user }}</h5>
                                         <div class="small text-muted">{{ post.created_at }}</div>
                                         <h2 class="card-title h4">{{ post.title }}</h2>
-                                        <p class="card-text">{{ post.content }}</p>
+                                        <p class="card-text">{{ post.content|markdownify|truncatechars:100|safe }}</p>
                                         <a class="btn btn-primary" href="{% url 'postDetail' post_id=post.id %}">Read more →</a>
                                     </div>
                                 </div>
