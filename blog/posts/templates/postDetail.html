@@ -11,7 +11,7 @@
                 <div class="card mb-4">
                     <div class="card-body">
                         <!-- Post date -->
-                        <div class="small text-muted">{{ post.created_at|date:"F j, Y" }}</div>
+                        <div class="small text-muted">{{ post.created_at|date:"F j, Y h:i A" }}</div>
                         <!-- Post title -->
                         <h1 class="card-title">{{ post.title }}</h1>
                         <!-- Post text -->
@@ -27,7 +27,7 @@
                 {% if user.is_authenticated %}
                 <div class="d-flex justify-content-end mt-2">
                     <a href="{% url 'editPost' post.id %}" class="btn btn-outline-primary me-2">Edit</a>
-                    <a href="" class="btn btn-outline-danger">Delete</a>
+                    <a href="{% url 'deletePost' post.id %}" class="btn btn-outline-danger">Delete</a>
                 </div>
                 <p>
                 {% endif %}

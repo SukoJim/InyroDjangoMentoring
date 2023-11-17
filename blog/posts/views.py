@@ -6,14 +6,17 @@ from .forms import *
 # Create your views here.
 
 def blog_home(request):
-    # 모든 포스트를 가져옵니다.
-    all_posts = Post.objects.all()
-
     # 최신 포스트를 가져옵니다.
     latest_post = Post.objects.latest('created_at')
-    post = get_object_or_404(Post, id=1) 
 
-    return render(request, 'home.html', {'all_posts': all_posts, 'latest_post': latest_post})
+    # 최신 포스트의 이미지를 불러옵니다. 이미지가 없는 경우 None을 반환합니다.
+    latest_post_image = latest_post.image.url if latest_post.image else None
+
+    # 모든 포스트를 최신 글 순으로 가져옵니다.
+    all_posts = Post.objects.all().order_by('-created_at')
+
+
+    return render(request, 'home.html', {'all_posts': all_posts, 'latest_post': latest_post, 'latest_post_image': latest_post_image})
 
 def createPost(request):
     if request.method == 'POST':
@@ -65,3 +68,14 @@ def editPost(request, post_id):
         form = PostForm(instance=post)
 
     return render(request, 'editPost.html', {'form': form, 'post': post})
+
+
+def deletePost(request, post_id):
+    # 게시글을 가져오거나 404 에러를 발생시킵니다.
+    post = get_object_or_404(Post, id=post_id)
+
+    # 게시글을 삭제합니다.
+    post.delete()
+
+    # 삭제 후 어떤 페이지로 이동할지를 정의합니다.
+    return redirect('home')
