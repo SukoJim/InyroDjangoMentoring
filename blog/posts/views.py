@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from .models import *
 from users.models import *
+from .forms import *
 # Create your views here.
 
 def blog_home(request):
@@ -13,11 +14,6 @@ def blog_home(request):
     post = get_object_or_404(Post, id=1) 
 
     return render(request, 'home.html', {'all_posts': all_posts, 'latest_post': latest_post})
-
-
-def postDetail(request):
-    return render(request, 'postDetail.html')
-
 
 def createPost(request):
     if request.method == 'POST':
@@ -52,3 +48,20 @@ def postDetail(request, post_id):
     }
     
     return render(request, 'postDetail.html', context)
+
+def editPost(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES, instance=post)
+        print(form)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.save()
+            return redirect('postDetail', post_id=post.id)
+        else:
+            print(form.errors)  # Print form errors to the console for debugging
+    else:
+        form = PostForm(instance=post)
+
+    return render(request, 'editPost.html', {'form': form, 'post': post})

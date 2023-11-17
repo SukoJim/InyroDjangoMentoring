@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "users",
     'markdownx',
     'markdownify',
+    'favicon',
 ]
 
 MIDDLEWARE = [

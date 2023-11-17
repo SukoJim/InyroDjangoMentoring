@@ -5,5 +5,9 @@ from .models import Post
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['title', 'content', 'image', 'category']
-        widgets = {'content': forms.Textarea(attrs={'rows': 5})}
+        fields = ['title', 'content', 'image', 'category_name']
+        
+    def __init__(self, *args, **kwargs):
+        super(PostForm, self).__init__(*args, **kwargs)
+        self.fields['image'].required = False
+        self.fields['category_name'].required = False
