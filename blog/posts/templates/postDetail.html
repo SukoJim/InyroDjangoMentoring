@@ -15,9 +15,11 @@
                         <!-- Post title -->
                         <h1 class="card-title">{{ post.title }}</h1>
                         <!-- Post text -->
-                        <p class="card-text">
-                            {{ post.get_content_markdown | safe }}
-                        </p>
+                        <div class="post-content">
+                            <p class="card-text">
+                                {{ post.get_content_markdown | safe }}
+                            </p>
+                        </div>
                         <button class="btn btn-outline-primary">Like</button>
                         <button class="btn btn-outline-secondary">Share</button>
                     </div>
