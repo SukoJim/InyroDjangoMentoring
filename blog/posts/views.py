@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from .models import *
 from users.models import *
@@ -10,6 +10,7 @@ def blog_home(request):
 
     # 최신 포스트를 가져옵니다.
     latest_post = Post.objects.latest('created_at')
+    post = get_object_or_404(Post, id=1) 
 
     return render(request, 'home.html', {'all_posts': all_posts, 'latest_post': latest_post})
 
@@ -17,9 +18,6 @@ def blog_home(request):
 def postDetail(request):
     return render(request, 'postDetail.html')
 
-from django.shortcuts import render, redirect
-from .models import Post
-from users.models import Category  # Assuming you have a Category model in the users app
 
 def createPost(request):
     if request.method == 'POST':

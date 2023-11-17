@@ -16,7 +16,7 @@
                         <h1 class="card-title">{{ post.title }}</h1>
                         <!-- Post text -->
                         <p class="card-text">
-                            {{ post.content }}
+                            {{ post.get_content_markdown | safe }}
                         </p>
                         <button class="btn btn-outline-primary">Like</button>
                         <button class="btn btn-outline-secondary">Share</button>
