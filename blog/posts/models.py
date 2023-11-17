@@ -12,7 +12,7 @@ class Post(models.Model):
     image = models.ImageField(upload_to = 'uploads/',null=True)
     user = models.ForeignKey('users.UserProfile', on_delete=models.CASCADE)  
     category_name = models.ForeignKey('users.Category', on_delete=models.CASCADE, default = 0)
-    
+
     def get_content_markdown(self):
         return markdown(self.content)
 

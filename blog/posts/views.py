@@ -5,6 +5,7 @@ from users.models import *
 from .forms import *
 import os
 from django.conf import settings
+from datetime import datetime
 
 # Create your views here.
 
@@ -21,6 +22,7 @@ def blog_home(request):
 
     return render(request, 'home.html', {'all_posts': all_posts, 'latest_post': latest_post, 'latest_post_image': latest_post_image})
 
+### Post CRUD ###
 def createPost(request):
     if request.method == 'POST':
         title = request.POST.get('title')
@@ -46,14 +48,9 @@ def createPost(request):
     return render(request, 'createPost.html', {'categories': Category.objects.all()})
 
 def postDetail(request, post_id):
-    # Assuming you have a Post model with an 'id' field
-    post = Post.objects.get(id=post_id)
-    
-    context = {
-        'post': post,
-    }
-    
-    return render(request, 'postDetail.html', context)
+    post = get_object_or_404(Post, pk=post_id)
+    comments = Comment.objects.filter(post=post).select_related('user')  # 댓글과 작성자 정보를 함께 가져오기
+    return render(request, 'postDetail.html', {'post': post, 'comments': comments})
 
 def editPost(request, post_id):
     post = get_object_or_404(Post, id=post_id)
@@ -93,4 +90,22 @@ def deletePost(request, post_id):
             os.remove(image_path)
 
     # 삭제 후 어떤 페이지로 이동할지를 정의합니다.
+    return redirect('home')
+#######
+
+def add_comment(request, post_id):
+    if request.method == 'POST':
+        content = request.POST.get('comment')
+        user = request.user
+
+        # 댓글을 생성합니다.
+        comment = Comment.objects.create(
+            content=content,
+            user=user,
+            created_at=datetime.now(),
+            post_id=post_id,  # Link the comment to the post
+        )
+
+        return redirect('postDetail', post_id=post_id)
+
     return redirect('home')

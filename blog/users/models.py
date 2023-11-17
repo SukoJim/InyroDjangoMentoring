@@ -12,7 +12,8 @@ class Comment(models.Model):
     content = models.CharField(max_length=100)
     created_at = models.DateTimeField(null=True)
     updated_at = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)  
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE) 
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True) 
 
 class Reply(models.Model):
     content = models.CharField(max_length=100)
