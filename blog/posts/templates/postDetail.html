@@ -60,10 +60,54 @@
                         {% for comment in post.comment_set.all %}
                             <div class="card-body">
                                 <div class="comment">
+                                    <small><strong>{{ comment.user.nickname }}</strong> - {{ comment.created_at|date:"F j, Y h:i A" }}</small>
                                     <p>{{ comment.content }}</p>
-                                    <small>{{ comment.created_at|date:"F j, Y h:i A" }} by {{ comment.user.nickname }}</small>
+                                </div>
+                                <!-- Add reply button and form for each comment -->
+                                <div class="reply-section">
+                                {% if user.is_authenticated %}
+                                    {% if comment.user == user %}
+                                        <!-- Edit and delete buttons for the comment -->
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            <button class="btn btn-primary btn-sm" onclick="toggleReplyForm('{{ comment.id }}')">Reply</button>
+                                            <a href="#" class="btn btn-outline-primary">Edit</a>
+                                            <a href="#" class="btn btn-outline-danger" onclick="showConfirmation()">Delete</a>
+                                        </div><p>
+                                    {% else %}
+                                        <!-- Reply button for other users -->
+                                        <button class="btn btn-primary btn-sm" onclick="toggleReplyForm('{{ comment.id }}')">Reply</button><p>
+                                    {% endif %}
+                                {% endif %}
+
+                                    <div id="replyForm{{ comment.id }}" class="reply-form" style="display: none;">
+                                        <!-- Add reply form for each comment -->
+                                        <form method="post" action="{% url 'add_reply' post.id comment.id %}">
+                                            {% csrf_token %}
+                                            <textarea class="form-control" name="reply" rows="2"></textarea>
+                                            <button type="submit" class="btn btn-primary mt-2">Submit Reply</button><p>
+                                        </form>
+                                    </div>
                                 </div>
                                 <hr class="my-4">
+
+                                <!-- 대댓글 로드 -->
+                                {% for reply in replies %}
+                                    {% if reply.comment.id == comment.id %}
+                                    <div class="card-body">
+                                        <div class="reply">
+                                            <small><strong>{{ reply.user.nickname }}</strong> - {{ reply.created_at|date:"F j, Y h:i A" }}</small>
+                                            <p>{{ reply.content }}</p>
+                                            {% if user.is_authenticated and reply.user == user %}
+                                            <!-- Edit and delete buttons for the reply -->
+                                            <a href="" class="btn btn-outline-primary btn-sm me-2">Edit</a>
+                                            <a href="" class="btn btn-outline-danger btn-sm" onclick="showConfirmation()">Delete</a>
+                                            {% endif %}
+                                        </div>
+                                        <hr class="my-4">
+                                    </div>
+                                
+                                    {% endif %}
+                                {% endfor %}
                             </div>
                         {% endfor %}
                         <!-- Comment input box -->
@@ -132,6 +176,15 @@
         function showConfirmation() {
             var confirmationModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
             confirmationModal.show();
+        }
+
+        function toggleReplyForm(commentId) {
+            var replyForm = document.getElementById('replyForm' + commentId);
+            if (replyForm.style.display === 'none' || replyForm.style.display === '') {
+                replyForm.style.display = 'block';
+            } else {
+                replyForm.style.display = 'none';
+            }
         }
     </script>
 {% endblock %}

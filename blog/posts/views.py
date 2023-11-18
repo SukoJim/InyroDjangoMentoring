@@ -50,7 +50,9 @@ def createPost(request):
 def postDetail(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
     comments = Comment.objects.filter(post=post).select_related('user')  # 댓글과 작성자 정보를 함께 가져오기
-    return render(request, 'postDetail.html', {'post': post, 'comments': comments})
+    replies = Reply.objects.filter(comment__post=post).select_related('user')  # 작성자 정보, 대댓글 정보 가져오기
+
+    return render(request, 'postDetail.html', {'post': post, 'comments': comments, 'replies': replies})
 
 def editPost(request, post_id):
     post = get_object_or_404(Post, id=post_id)
@@ -104,6 +106,26 @@ def add_comment(request, post_id):
             user=user,
             created_at=datetime.now(),
             post_id=post_id,  # Link the comment to the post
+        )
+
+        return redirect('postDetail', post_id=post_id)
+
+    return redirect('home')
+
+def add_reply(request, post_id, comment_id):
+    if request.method == 'POST':
+        content = request.POST.get('reply')
+        user = request.user
+
+        # Find the comment associated with the post and comment_id
+        comment = get_object_or_404(Comment, id=comment_id, post__id=post_id)
+
+        # Create a new reply for the comment
+        reply = Reply.objects.create(
+            content=content,
+            user=user,
+            created_at=datetime.now(),
+            comment=comment,
         )
 
         return redirect('postDetail', post_id=post_id)
