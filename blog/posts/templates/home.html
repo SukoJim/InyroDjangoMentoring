@@ -21,7 +21,11 @@
                     {% if latest_post %}
                         <div class="card mb-4">
                             <a href="{% url 'postDetail' post_id=latest_post.id %}">
-                                <img class="card-img-top" src="{{ latest_post.image.url }}" alt="..." />
+                                {% if latest_post.image %}
+                                    <img class="card-img-top" src="{{ latest_post.image.url }}" alt="..." />
+                                {% else %}
+                                    <img class="card-img-top" src="{% static 'image1.avif '%}" alt="Default Image" />
+                                {% endif %}
                             </a>
                             <div class="card-body">
                                 <h6 class="card-title">{{ latest_post.user }}</h5>
@@ -40,7 +44,11 @@
                                 <!-- Blog post-->
                                 <div class="card mb-4">
                                     <a href="{% url 'postDetail' post_id=post.id %}">
+                                        {% if post.image %}
                                         <img class="card-img-top" src="{{ post.image.url }}" alt="..." />
+                                        {% else %}
+                                            <img class="card-img-top" src="{% static 'image1.avif' %}" alt="Default Image" style="width: 100%; height: auto;"/>
+                                        {% endif %}
                                     </a>
                                     <div class="card-body">
                                         <h6 class="card-title">{{ post.user }}</h5>
