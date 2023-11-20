@@ -53,8 +53,9 @@
                 </div>
                 <p>
                 {% endif %}
+                <button class="btn btn-primary btn-sm mb-3" onclick="toggleComments()">Comments</button>
                 <!-- Comment section -->
-                <div class="card mb-4">
+                <div class="card mb-4" id = "commentsSection">
                     <div class="card-body">
                         <h3 class="card-title">Comments</h3>
                         {% for comment in post.comment_set.all %}
@@ -63,6 +64,7 @@
                                     <small><strong>{{ comment.user.nickname }}</strong> - {{ comment.created_at|date:"F j, Y h:i A" }}</small>
                                     <p>{{ comment.content }}</p>
                                 </div>
+
                                 <!-- Add reply button and form for each comment -->
                                 <div class="reply-section">
                                 {% if user.is_authenticated %}
@@ -97,10 +99,14 @@
                                         <div class="reply">
                                             <small><strong>{{ reply.user.nickname }}</strong> - {{ reply.created_at|date:"F j, Y h:i A" }}</small>
                                             <p>{{ reply.content }}</p>
-                                            {% if user.is_authenticated and reply.user == user %}
-                                            <!-- Edit and delete buttons for the reply -->
-                                            <a href="" class="btn btn-outline-primary btn-sm me-2">Edit</a>
-                                            <a href="" class="btn btn-outline-danger btn-sm" onclick="showConfirmation()">Delete</a>
+                                            {% if user.is_authenticated %}
+                                                {% if reply.user == user %}
+                                                <!-- Edit and delete buttons for the reply -->
+                                                <div class="btn-group btn-group-sm" role="group">
+                                                    <a href="" class="btn btn-outline-primary">Edit</a>
+                                                    <a href="" class="btn btn-outline-danger" onclick="showConfirmation()">Delete</a>
+                                                </div><p>
+                                                {% endif %}
                                             {% endif %}
                                         </div>
                                         <hr class="my-4">
@@ -124,6 +130,7 @@
                     </div>
                 </div>  
                 <!-- Display existing comments -->
+                {% include 'category_posts.html' %}
                 <nav aria-label="Pagination">
                     <hr class="my-0" />
                     <ul class="pagination justify-content-center my-4">
@@ -186,6 +193,15 @@
                 replyForm.style.display = 'block';
             } else {
                 replyForm.style.display = 'none';
+            }
+        }
+
+        function toggleComments() {
+            var commentsSection = document.getElementById('commentsSection');
+            if (commentsSection.style.display === 'none' || commentsSection.style.display === '') {
+                commentsSection.style.display = 'block';
+            } else {
+                commentsSection.style.display = 'none';
             }
         }
     </script>

@@ -131,3 +131,4 @@ def add_reply(request, post_id, comment_id):
         return redirect('postDetail', post_id=post_id)
 
     return redirect('home')
+
