@@ -81,14 +81,6 @@
                                     {% endif %}
                                 {% endif %}
 
-                                    <div id="replyForm{{ comment.id }}" class="reply-form" style="display: none;">
-                                        <!-- Add reply form for each comment -->
-                                        <form method="post" action="{% url 'add_reply' post.id comment.id %}">
-                                            {% csrf_token %}
-                                            <textarea class="form-control" name="reply" rows="2"></textarea>
-                                            <button type="submit" class="btn btn-primary mt-2">Submit Reply</button><p>
-                                        </form>
-                                    </div>
                                 </div>
                                 <hr class="my-4">
 
@@ -114,6 +106,15 @@
                                 
                                     {% endif %}
                                 {% endfor %}
+                                
+                                <div id="replyForm{{ comment.id }}" class="reply-form" style="display: none;">
+                                    <!-- Add reply form for each comment -->
+                                    <form method="post" action="{% url 'add_reply' post.id comment.id %}">
+                                        {% csrf_token %}
+                                        <textarea class="form-control" name="reply" rows="2"></textarea>
+                                        <button type="submit" class="btn btn-primary mt-2">Submit Reply</button><p>
+                                    </form>
+                                </div>
                             </div>
                         {% endfor %}
                         <!-- Comment input box -->
