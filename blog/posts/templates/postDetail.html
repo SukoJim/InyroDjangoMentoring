@@ -54,83 +54,9 @@
                 <p>
                 {% endif %}
                 <button class="btn btn-primary btn-sm mb-3" onclick="toggleComments()">Comments</button>
-                <!-- Comment section -->
-                <div class="card mb-4" id = "commentsSection">
-                    <div class="card-body">
-                        <h3 class="card-title">Comments</h3>
-                        {% for comment in post.comment_set.all %}
-                            <div class="card-body">
-                                <div class="comment">
-                                    <small><strong>{{ comment.user.nickname }}</strong> - {{ comment.created_at|date:"F j, Y h:i A" }}</small>
-                                    <p>{{ comment.content }}</p>
-                                </div>
-
-                                <!-- Add reply button and form for each comment -->
-                                <div class="reply-section">
-                                {% if user.is_authenticated %}
-                                    {% if comment.user == user %}
-                                        <!-- Edit and delete buttons for the comment -->
-                                        <div class="btn-group btn-group-sm" role="group">
-                                            <button class="btn btn-primary btn-sm" onclick="toggleReplyForm('{{ comment.id }}')">Reply</button>
-                                            <a href="#" class="btn btn-outline-primary">Edit</a>
-                                            <a href="#" class="btn btn-outline-danger" onclick="showConfirmation()">Delete</a>
-                                        </div><p>
-                                    {% else %}
-                                        <!-- Reply button for other users -->
-                                        <button class="btn btn-primary btn-sm" onclick="toggleReplyForm('{{ comment.id }}')">Reply</button><p>
-                                    {% endif %}
-                                {% endif %}
-
-                                </div>
-                                <hr class="my-4">
-
-                                <!-- 대댓글 로드 -->
-                                {% for reply in replies %}
-                                    {% if reply.comment.id == comment.id %}
-                                    <div class="card-body">
-                                        <div class="reply">
-                                            <small><strong>{{ reply.user.nickname }}</strong> - {{ reply.created_at|date:"F j, Y h:i A" }}</small>
-                                            <p>{{ reply.content }}</p>
-                                            {% if user.is_authenticated %}
-                                                {% if reply.user == user %}
-                                                <!-- Edit and delete buttons for the reply -->
-                                                <div class="btn-group btn-group-sm" role="group">
-                                                    <a href="" class="btn btn-outline-primary">Edit</a>
-                                                    <a href="" class="btn btn-outline-danger" onclick="showConfirmation()">Delete</a>
-                                                </div><p>
-                                                {% endif %}
-                                            {% endif %}
-                                        </div>
-                                        <hr class="my-4">
-                                    </div>
-                                
-                                    {% endif %}
-                                {% endfor %}
-                                
-                                <div id="replyForm{{ comment.id }}" class="reply-form" style="display: none;">
-                                    <!-- Add reply form for each comment -->
-                                    <form method="post" action="{% url 'add_reply' post.id comment.id %}">
-                                        {% csrf_token %}
-                                        <textarea class="form-control" name="reply" rows="2"></textarea>
-                                        <button type="submit" class="btn btn-primary mt-2">Submit Reply</button><p>
-                                    </form>
-                                </div>
-                            </div>
-                        {% endfor %}
-                        <!-- Comment input box -->
-                        <div class="form-group mt-4">
-                            <label for="comment">Leave a Comment:</label>
-                            <form method="post" action="{% url 'add_comment' post.id %}">
-                                {% csrf_token %}
-                                {% if user.is_authenticated %}
-                                    <textarea class="form-control" name="comment" id="comment" rows="4"></textarea>
-                                    <button type="submit" class="btn btn-primary mt-2" id="submitComment">Submit</button>
-                                {% endif %}
-                            </form>
-                        </div>
-                    </div>
-                </div>  
-                <!-- Display existing comments -->
+            <!-- Comment section -->
+                {% include 'comment.html' %}
+            <!-- Display existing comments -->
                 {% include 'category_posts.html' %}
                 <nav aria-label="Pagination">
                     <hr class="my-0" />
@@ -145,40 +71,40 @@
                     </ul>
                 </nav>
             </div>
-                        <!-- Side widgets-->
-                        <div class="col-lg-4">
-                            <!-- Search widget-->
-                            <div class="card mb-4">
-                                <div class="card-header">Search</div>
-                                <div class="card-body">
-                                    <div class="input-group">
-                                        <input class="form-control" type="text" placeholder="Enter search term..." aria-label="Enter search term..." aria-describedby="button-search" />
-                                        <button class="btn btn-primary" id="button-search" type="button">Go!</button>
-                                    </div>
-                                </div>
+            <!-- Side widgets-->
+                <div class="col-lg-4">
+                    <!-- Search widget-->
+                    <div class="card mb-4">
+                        <div class="card-header">Search</div>
+                        <div class="card-body">
+                            <div class="input-group">
+                                <input class="form-control" type="text" placeholder="Enter search term..." aria-label="Enter search term..." aria-describedby="button-search" />
+                                <button class="btn btn-primary" id="button-search" type="button">Go!</button>
                             </div>
-                             <!-- Categories widget-->
-                             <div class="card mb-4">
-                                <div class="card-header">Categories</div>
-                                <div class="card-body">
-                                    <div class="row">
-                                         <div class="col-sm-6">
-                                             <ul class="list-unstyled mb-0">
-                                                <li><a href="#!">Web Design</a></li>
-                                                <li><a href="#!">HTML</a></li>
-                                                <li><a href="#!">Freebies</a></li>
-                                            </ul>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <ul class="list-unstyled mb-0">
-                                                <li><a href="#!">JavaScript</a></li>
-                                                <li><a href="#!">CSS</a></li>
-                                                <li><a href="#!">Tutorials</a></li>
-                                            </ul>
-                                         </div>
-                                    </div>
+                        </div>
+                    </div>
+                        <!-- Categories widget-->
+                        <div class="card mb-4">
+                        <div class="card-header">Categories</div>
+                        <div class="card-body">
+                            <div class="row">
+                                    <div class="col-sm-6">
+                                        <ul class="list-unstyled mb-0">
+                                        <li><a href="#!">Web Design</a></li>
+                                        <li><a href="#!">HTML</a></li>
+                                        <li><a href="#!">Freebies</a></li>
+                                    </ul>
                                 </div>
+                                <div class="col-sm-6">
+                                    <ul class="list-unstyled mb-0">
+                                        <li><a href="#!">JavaScript</a></li>
+                                        <li><a href="#!">CSS</a></li>
+                                        <li><a href="#!">Tutorials</a></li>
+                                    </ul>
+                                    </div>
                             </div>
+                        </div>
+                    </div>
             </div>
         </div>
     </div>
@@ -186,6 +112,14 @@
         function showConfirmation() {
             var confirmationModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
             confirmationModal.show();
+        }
+        function deleteComment(commentId) {
+            // 모달을 표시하는 코드 추가
+            var confirmationModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+            confirmationModal.show();
+    
+            // 모달에서 확인 버튼을 눌렀을 때 어떤 댓글을 삭제할지 저장
+            document.getElementById('deleteCommentId').value = commentId;
         }
 
         function toggleReplyForm(commentId) {

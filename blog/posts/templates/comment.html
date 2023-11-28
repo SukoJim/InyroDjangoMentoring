@@ -1,0 +1,96 @@
+<!-- Comment section -->
+<div class="card mb-4" id = "commentsSection">
+    <div class="card-body">
+        <h3 class="card-title">Comments</h3>
+        {% for comment in post.comment_set.all %}
+            <div class="card-body">
+                <div class="comment">
+                    <small><strong>{{ comment.user.nickname }}</strong> - {{ comment.created_at|date:"F j, Y h:i A" }}</small>
+                    <p>{{ comment.content }}</p>
+                </div>
+
+            <!-- Add reply button and form for each comment -->
+                <div class="reply-section">
+                {% if user.is_authenticated %}
+                    {% if comment.user == user %}
+                        <!-- Edit and delete buttons for the comment -->
+                        <div class="btn-group btn-group-sm" role="group">
+                            <button class="btn btn-primary btn-sm" onclick="toggleReplyForm('{{ comment.id }}')">Reply</button>
+                            <button class="btn btn-outline-primary" onclick="editComment('{{ comment.id }}')">Edit</button>
+                            <button class="btn btn-outline-danger" onclick="deleteComment('{{ comment.id }}')">Delete</button>
+                            <!-- 상단에 모달을 표시할 위치 -->
+                            <div id="confirmationModalCom" class="modal" tabindex="-1">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Delete Confirmation</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Are you sure you want to delete this comment?</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <!-- 취소 버튼 -->
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                            <!-- 확인 버튼 클릭 시 deleteComment 함수 호출 -->
+                                            <button type="button" class="btn btn-danger" onclick="confirmDeleteComment()">Delete</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><p>
+                    {% else %}
+                        <!-- Reply button for other users -->
+                        <button class="btn btn-primary btn-sm" onclick="toggleReplyForm('{{ comment.id }}')">Reply</button><p>
+                    {% endif %}
+                {% endif %}
+
+                </div>
+                <hr class="my-4">
+
+                <!-- 대댓글 로드 -->
+                {% for reply in replies %}
+                    {% if reply.comment.id == comment.id %}
+                    <div class="card-body">
+                        <div class="reply">
+                            <small><strong>{{ reply.user.nickname }}</strong> - {{ reply.created_at|date:"F j, Y h:i A" }}</small>
+                            <p>{{ reply.content }}</p>
+                            {% if user.is_authenticated %}
+                                {% if reply.user == user %}
+                                <!-- Edit and delete buttons for the reply -->
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <button class="btn btn-outline-primary" >Edit</button>
+                                    <button class="btn btn-outline-danger" onclick="showConfirmation()">Delete</button>
+                                </div><p>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                        <hr class="my-4">
+                    </div>
+                
+                    {% endif %}
+                {% endfor %}
+                
+                <div id="replyForm{{ comment.id }}" class="reply-form" style="display: none;">
+                    <!-- Add reply form for each comment -->
+                    <form method="post" action="{% url 'add_reply' post.id comment.id %}">
+                        {% csrf_token %}
+                        <textarea class="form-control" name="reply" rows="2"></textarea>
+                        <button type="submit" class="btn btn-primary mt-2">Submit Reply</button><p>
+                    </form>
+                </div>
+            </div>
+        {% endfor %}
+    <!-- Comment input box -->
+        <div class="form-group mt-4">
+            <label for="comment">Leave a Comment:</label>
+            <form method="post" action="{% url 'add_comment' post.id %}">
+                {% csrf_token %}
+                {% if user.is_authenticated %}
+                    <textarea class="form-control" name="comment" id="comment" rows="4"></textarea>
+                    <button type="submit" class="btn btn-primary mt-2" id="submitComment">Submit</button>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+</div> 
