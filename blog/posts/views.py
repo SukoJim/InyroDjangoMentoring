@@ -6,6 +6,8 @@ from .forms import *
 import os
 from django.conf import settings
 from datetime import datetime
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 
 # Create your views here.
 
@@ -19,8 +21,21 @@ def blog_home(request):
     # 모든 포스트를 최신 글 순으로 가져옵니다.
     all_posts = Post.objects.exclude(id=latest_post.id).order_by('-created_at')
 
+    # Paginator를 사용하여 페이지당 6개의 포스트로 나누기
+    paginator = Paginator(all_posts, 6)
+    page = request.GET.get('page')
 
-    return render(request, 'home.html', {'all_posts': all_posts, 'latest_post': latest_post, 'latest_post_image': latest_post_image})
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        # 페이지가 정수가 아닌 경우, 첫 번째 페이지로 이동
+        posts = paginator.page(1)
+    except EmptyPage:
+        # 페이지 범위를 벗어나면 마지막 페이지로 이동
+        posts = paginator.page(paginator.num_pages)
+
+    return render(request, 'home.html', {'posts': posts, 'latest_post': latest_post, 'latest_post_image': latest_post_image})
+
 
 ### Post CRUD ###
 def createPost(request):

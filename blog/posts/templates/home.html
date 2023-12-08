@@ -39,39 +39,46 @@
     
                     <!-- Nested row for non-featured blog posts-->
                     <div class="row">
-                        {% for post in all_posts %}
-                            <div class="col-lg-6">
-                                <!-- Blog post-->
-                                <div class="card mb-4">
-                                    <a href="{% url 'postDetail' post_id=post.id %}">
-                                        {% if post.image %}
+                        {% for post in posts %}
+                        <div class="col-lg-6">
+                            <!-- Blog post-->
+                            <div class="card mb-4">
+                                <a href="{% url 'postDetail' post_id=post.id %}">
+                                    {% if post.image %}
                                         <img class="card-img-top" src="{{ post.image.url }}" alt="..." />
-                                        {% else %}
-                                            <img class="card-img-top" src="{% static 'image1.avif' %}" alt="Default Image" style="width: 100%; height: auto;"/>
-                                        {% endif %}
-                                    </a>
-                                    <div class="card-body">
-                                        <h6 class="card-title">{{ post.user }}</h5>
-                                        <div class="small text-muted">{{ post.created_at }}</div>
-                                        <h2 class="card-title h4">{{ post.title }}</h2>
-                                        <p class="card-text">{{ post.content|markdownify|truncatechars:100|safe }}</p>
-                                        <a class="btn btn-primary" href="{% url 'postDetail' post_id=post.id %}">Read more →</a>
-                                    </div>
+                                    {% else %}
+                                        <img class="card-img-top" src="{% static 'image1.avif' %}" alt="Default Image" style="width: 100%; height: auto;"/>
+                                    {% endif %}
+                                </a>
+                                <div class="card-body">
+                                    <h6 class="card-title">{{ post.user }}</h5>
+                                    <div class="small text-muted">{{ post.created_at }}</div>
+                                    <h2 class="card-title h4">{{ post.title }}</h2>
+                                    <p class="card-text">{{ post.content|markdownify|truncatechars:100|safe }}</p>
+                                    <a class="btn btn-primary" href="{% url 'postDetail' post_id=post.id %}">Read more →</a>
                                 </div>
                             </div>
-                        {% endfor %}
+                        </div>
+                    {% endfor %}
                     </div>
+
                     <!-- Pagination-->
                     <nav aria-label="Pagination">
                         <hr class="my-0" />
                         <ul class="pagination justify-content-center my-4">
-                            <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Newer</a></li>
-                            <li class="page-item active" aria-current="page"><a class="page-link" href="#!">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#!">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#!">3</a></li>
-                            <li class="page-item disabled"><a class="page-link" href="#!">...</a></li>
-                            <li class="page-item"><a class="page-link" href="#!">15</a></li>
-                            <li class="page-item"><a class="page-link" href="#!">Older</a></li>
+                            {% if posts.has_previous %}
+                                <li class="page-item"><a class="page-link" href="?page=1">Newer</a></li>
+                            {% endif %}
+                            
+                            {% for num in posts.paginator.page_range %}
+                                <li class="page-item {% if num == posts.number %}active{% endif %}">
+                                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                </li>
+                            {% endfor %}
+
+                            {% if posts.has_next %}
+                                <li class="page-item"><a class="page-link" href="?page={{ posts.paginator.num_pages }}">Older</a></li>
+                            {% endif %}
                         </ul>
                     </nav>
                 </div>
