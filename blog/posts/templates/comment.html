@@ -16,8 +16,11 @@
                         <!-- Edit and delete buttons for the comment -->
                         <div class="btn-group btn-group-sm" role="group">
                             <button class="btn btn-primary btn-sm" onclick="toggleReplyForm('{{ comment.id }}')">Reply</button>
-                            <button class="btn btn-outline-primary" onclick="editComment('{{ comment.id }}')">Edit</button>
-                            <button class="btn btn-outline-danger" onclick="deleteComment('{{ comment.id }}')">Delete</button>
+                            <button class="btn btn-outline-primary" onclick="toggleEditCommentForm('{{ comment.id }}')">Edit</button>
+                            <form method="post" action="{% url 'delete_comment' comment.id %}" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-outline-danger">Delete</button>
+                            </form>
                             <!-- 상단에 모달을 표시할 위치 -->
                             <div id="confirmationModalCom" class="modal" tabindex="-1">
                                 <div class="modal-dialog">
@@ -44,7 +47,11 @@
                         <button class="btn btn-primary btn-sm" onclick="toggleReplyForm('{{ comment.id }}')">Reply</button><p>
                     {% endif %}
                 {% endif %}
-
+                <form method="post" action="{% url 'edit_comment' comment_id=comment.id %}" class="edit-comment-form" data-comment-id="{{ comment.id }}" style="display: none;">
+                    {% csrf_token %}
+                    <textarea class="form-control" name="comment_edit" rows="2">{{ comment.content }}</textarea><p>
+                    <button type="submit" class="btn btn-primary">Confirm</button>
+                </form>
                 </div>
                 <hr class="my-4">
 
@@ -59,18 +66,25 @@
                                 {% if reply.user == user %}
                                 <!-- Edit and delete buttons for the reply -->
                                 <div class="btn-group btn-group-sm" role="group">
-                                    <button class="btn btn-outline-primary" >Edit</button>
-                                    <button class="btn btn-outline-danger" onclick="showConfirmation()">Delete</button>
+                                    <button class="btn btn-outline-primary" onclick="toggleEditReplyForm('{{ reply.id }}')">Edit</button>
+                                    <form method="post" action="{% url 'delete_reply' reply.id %}" class="d-inline">{% csrf_token %}
+                                        <button type="submit" class="btn btn-outline-danger">Delete</button>
+                                    </form>
                                 </div><p>
                                 {% endif %}
                             {% endif %}
                         </div>
                         <hr class="my-4">
                     </div>
-                
+                    <form method="post" action="{% url 'edit_reply' reply_id=reply.id %}" class="edit-reply-form" data-reply-id="{{ reply.id }}" style="display: none;">
+                        {% csrf_token %}
+                        <textarea class="form-control" name="reply_edit" rows="2">{{ reply.content }}</textarea>
+                        <button type="submit" class="btn btn-primary">Confirm</button>
+                    </form>
                     {% endif %}
                 {% endfor %}
-                
+
+
                 <div id="replyForm{{ comment.id }}" class="reply-form" style="display: none;">
                     <!-- Add reply form for each comment -->
                     <form method="post" action="{% url 'add_reply' post.id comment.id %}">
@@ -94,3 +108,30 @@
         </div>
     </div>
 </div> 
+
+<script>
+    function toggleEditCommentForm(commentId) {
+        var editForm = document.querySelector('.edit-comment-form[data-comment-id="' + commentId + '"]');
+        console.log('editForm:', editForm);
+        
+        var replyForm = document.querySelector('.reply-form[data-comment-id="' + commentId + '"]');
+        
+        if (editForm.style.display === 'none') {
+            editForm.style.display = 'block';
+            replyForm.style.display = 'none';
+        } else {
+            editForm.style.display = 'none';
+        }
+    }
+
+    function toggleEditReplyForm(replyId) {
+        var editForm = document.querySelector('.edit-reply-form[data-reply-id="' + replyId + '"]');
+        
+        if (editForm.style.display === 'none') {
+            editForm.style.display = 'block';
+        } else {
+            editForm.style.display = 'none';
+        }
+    }
+    
+</script>

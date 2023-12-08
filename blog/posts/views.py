@@ -132,3 +132,48 @@ def add_reply(request, post_id, comment_id):
 
     return redirect('home')
 
+# views.py의 editComment 함수
+def editComment(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+
+    if request.method == 'POST':
+        comment.content = request.POST.get('comment_edit')
+        comment.save()
+        return redirect('postDetail', post_id=comment.post.id)
+    else:
+        post = comment.post
+        return render(request, 'postDetail.html', {'comment': comment, 'post': post})
+
+def editReply(request, reply_id):
+    reply = get_object_or_404(Reply, id=reply_id)
+
+    if request.method == 'POST':
+        reply.content = request.POST.get('reply_edit')
+        reply.save()
+        # Redirect to the appropriate page, for example, postDetail
+        return redirect('postDetail', post_id=reply.comment.post.id)
+    else:
+        # Render the template for editing replies
+        post=reply.comment.post
+        return render(request, 'postDetail.html', {'reply': reply, 'post' : post})
+
+
+def deleteComment(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+
+    if request.user == comment.user:  # Check if the user is the owner of the comment
+        if request.method == 'POST':
+            comment.delete()
+            return redirect('postDetail', post_id=comment.post.id)
+
+    return redirect('home')  # Redirect to home if the user is not the owner of the comment
+
+def deleteReply(request, reply_id):
+    reply = get_object_or_404(Reply, id=reply_id)
+
+    if request.user == reply.user:  # Check if the user is the owner of the reply
+        if request.method == 'POST':
+            reply.delete()
+            return redirect('postDetail', post_id=reply.comment.post.id)
+
+    return redirect('home')  # Redirect to home if the user is not the owner of the reply
