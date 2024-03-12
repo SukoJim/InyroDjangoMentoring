@@ -9,14 +9,14 @@ Django를 사용하여 블로그 작성하기
  - Django: 4.2.7
 
 ## ERD
-  - <img src="https://github.com/SukoJim/InyroDjangoMentoring/assets/102002817/184dfa7c-6458-4c6c-a088-0e3dd3890408" width="700" height="500">
+  - <img src="https://github.com/SukoJim/InyroDjangoMentoring/assets/102002817/184dfa7c-6458-4c6c-a088-0e3dd3890408" width="60%">
 
 
 
 ## Screen Shots
 
 * 블로그 홈  
- <blockquote><img src="https://github.com/SukoJim/InyroDjangoMentoring/assets/102002817/f8593884-a77c-4066-822c-4fe06168d33a" width="700" height="700"></blockquote>
+ <blockquote><img src="https://github.com/SukoJim/InyroDjangoMentoring/assets/102002817/f8593884-a77c-4066-822c-4fe06168d33a" width="60%"></blockquote>
 
 * 댓글 및 대댓글    
  <blockquote><img src="https://github.com/SukoJim/InyroDjangoMentoring/assets/102002817/d0838992-1072-46cf-a832-57bc5884f076" width="60%"></blockquote>
